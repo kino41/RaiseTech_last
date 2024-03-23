@@ -11,5 +11,5 @@ public interface UserMapper {
     List<User> getAll();
 
     @Select("SELECT * FROM users WHERE id = #{id}")
-    List<User> getId(int id);
+    List<User> getById(int id);
 }
