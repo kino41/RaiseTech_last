@@ -9,4 +9,4 @@ CREATE TABLE users (
 
 INSERT INTO users (name, birthdate) VALUES ("suzuki", "1973/07/22");
 INSERT INTO users (name, birthdate) VALUES ("kato", "1960/03/15");
-InSERT INTO users (name, birthdate) VALUES ("tanaka", "1991/12/08");
+INSERT INTO users (name, birthdate) VALUES ("tanaka", "1991/12/08");
