@@ -25,4 +25,8 @@ public class UserService {
         userMapper.insert(newUser);
         return newUser;
     }
+
+    public User insert(User user) {
+        return user;
+    }
 }

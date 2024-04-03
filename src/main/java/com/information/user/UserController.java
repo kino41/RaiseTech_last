@@ -31,7 +31,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<UserResponse> insert(@RequestBody UserRequest userRequest, UriComponentsBuilder uriBuilder) {
-        User user = userService.insert(userRequest.getName(), userRequest.getBirthdate());
+        User user = userService.insert(userRequest.convertToUser());
         URI location = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
         UserResponse body = new UserResponse("user created");
         return ResponseEntity.created(location).body(body);

@@ -16,4 +16,8 @@ public class UserRequest {
     public String getBirthdate() {
         return birthdate;
     }
+
+    public User convertToUser() {
+        return new User(null, this.name, this.birthdate);
+    }
 }
