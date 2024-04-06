@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -18,4 +19,7 @@ public interface UserMapper {
     @Insert("INSERT INTO users (name, birthdate) VALUES(#{name}, #{birthdate})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
+
+    @Update("UPDATE users SET name = #{name}, birthdate = #{birthdate} WHERE id = #{id}")
+    void update(User user);
 }

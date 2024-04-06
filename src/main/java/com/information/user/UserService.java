@@ -30,4 +30,9 @@ public class UserService {
         userMapper.insert(user);
         return user;
     }
+
+    public void update(Integer id, String name, String birthdate) {
+        User changeUser = User.updateUser(id, name, birthdate);
+        userMapper.update(changeUser);
+    }
 }
