@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public void update(Integer id, String name, String birthdate) {
-        User changeUser = User.updateUser(id, name, birthdate);
-        userMapper.update(changeUser);
+        User user = userMapper.findById(id);
+        user.updateUser(name, birthdate);
     }
 }

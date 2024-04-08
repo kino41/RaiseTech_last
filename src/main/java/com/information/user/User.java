@@ -15,8 +15,7 @@ public class User {
         return new User(null, name, birthdate);
     }
 
-    public static User updateUser(Integer id, String name, String birthdate) {
-        return new User(id, name, birthdate);
+    public void updateUser(String name, String birthdate) {
     }
 
     public int getId() {
