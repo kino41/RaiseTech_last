@@ -3,6 +3,7 @@ package com.information.user;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -31,8 +32,13 @@ public class UserService {
         return user;
     }
 
-    public void update(Integer id, String name, String birthdate) {
-        User user = userMapper.findById(id);
-        user.updateUser(name, birthdate);
+    public User update(Integer id, String name, String birthdate) {
+        Optional<User> user = userMapper.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserNotFoundException("user not found");
+        }
+
     }
 }
