@@ -17,8 +17,13 @@ public class UserService {
         return userMapper.getAll();
     }
 
-    public List<User> findById(int id) {
-        return userMapper.getById(id);
+    public User findById(int id) {
+        Optional<User> user = userMapper.getById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserNotFoundException("user not found");
+        }
     }
 
     public User insert(String name, String birthdate) {
