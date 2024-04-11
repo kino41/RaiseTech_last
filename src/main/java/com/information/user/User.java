@@ -16,6 +16,8 @@ public class User {
     }
 
     public void updateUser(String name, String birthdate) {
+        this.name = name;
+        this.birthdate = birthdate;
     }
 
     public int getId() {

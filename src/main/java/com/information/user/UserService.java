@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserMapper userMapper;
+    private UserMapper userMapper;
 
     public UserService(UserMapper userMapper) {
         this.userMapper = userMapper;
@@ -38,12 +38,14 @@ public class UserService {
     }
 
     public User update(Integer id, String name, String birthdate) {
-        Optional<User> user = userMapper.findById(id);
-        if (user.isPresent()) {
-            return user.get();
+        Optional<User> optionalUser = userMapper.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.updateUser(name, birthdate);
+            userMapper.update(user);
+            return user;
         } else {
             throw new UserNotFoundException("user not found");
         }
-
     }
 }
