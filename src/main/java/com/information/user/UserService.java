@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public User findById(int id) {
-        Optional<User> user = userMapper.getById(id);
+        Optional<User> user = userMapper.findById(id);
         if (user.isPresent()) {
             return user.get();
         } else {
