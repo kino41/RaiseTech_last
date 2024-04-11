@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     public UserService(UserMapper userMapper) {
         this.userMapper = userMapper;
