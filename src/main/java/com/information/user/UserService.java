@@ -48,4 +48,11 @@ public class UserService {
             throw new UserNotFoundException("user not found");
         }
     }
+
+    public void delete(Integer id) {
+        int affectedRows = userMapper.deleteById(id);
+        if (affectedRows <= 0) {
+            throw new UserNotFoundException("user not found");
+        }
+    }
 }
