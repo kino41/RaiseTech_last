@@ -1,5 +1,6 @@
 package com.information.user;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -23,4 +24,7 @@ public interface UserMapper {
 
     @Select("SELECT * FROM users WHERE id = #{id}")
     Optional<User> findById(int id);
+
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    int deleteById(int id);
 }

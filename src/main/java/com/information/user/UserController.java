@@ -2,6 +2,7 @@ package com.information.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,13 @@ public class UserController {
     public ResponseEntity<UserResponse> update(@PathVariable Integer id, @RequestBody User updateUser) {
         userService.update(id, updateUser.getName(), updateUser.getBirthdate());
         UserResponse response = new UserResponse("user updated");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("users/{id}")
+    public ResponseEntity<UserResponse> delete(@PathVariable Integer id) {
+        userService.delete(id);
+        UserResponse response = new UserResponse("user deleted");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
