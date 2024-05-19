@@ -1,5 +1,7 @@
 package com.information.user;
 
+import java.util.Objects;
+
 public class User {
     private Integer id;
     private String name;
@@ -30,5 +32,19 @@ public class User {
 
     public String getBirthdate() {
         return birthdate;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof User user)) return false;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(birthdate, user.birthdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, birthdate);
     }
 }
