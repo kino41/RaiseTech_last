@@ -16,6 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,5 +70,13 @@ class UserServiceTest {
         doReturn(1).when(userMapper).deleteById(1);
         userService.delete(1);
         verify(userMapper).deleteById(1);
+    }
+
+    @Test
+    void 存在しないユーザーのIDを指定したときに削除が行われず例外を返すこと() {
+        doReturn(Optional.empty()).when(userMapper).findById(0);
+        assertThrows(UserNotFoundException.class, () -> userService.delete(0));
+        verify(userMapper, never()).deleteById(0);
+        verify(userMapper).findById(0);
     }
 }
