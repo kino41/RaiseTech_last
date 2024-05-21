@@ -16,6 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,11 +46,37 @@ class UserServiceTest {
         doReturn(Optional.of(new User(1, "suzuki", "1973/07/22"))).when(userMapper).findById(1);
         User actual = userService.findById(1);
         assertThat(actual).isEqualTo(new User(1, "suzuki", "1973/07/22"));
+        verify(userMapper).findById(1);
     }
 
     @Test
     void 存在しないユーザーのIDを指定したときに例外を返すこと() {
         doReturn(Optional.empty()).when(userMapper).findById(0);
         assertThrows(UserNotFoundException.class, () -> userService.findById(0));
+    }
+
+    @Test
+    void 新規のユーザーをIDと紐付けて正常に登録できること() {
+        User newUser = new User(4, "hayashi", "1992/03/09");
+        userService.insert(newUser);
+        verify(userMapper).insert(newUser);
+    }
+
+    @Test
+    void 存在するユーザーのIDを指定したときに正常にユーザーを削除できること() {
+        doReturn(Optional.of(new User(1, "suzuki", "1973/07/22"))).when(userMapper).findById(1);
+        User actual = userService.findById(1);
+        assertThat(actual).isEqualTo(new User(1, "suzuki", "1973/07/22"));
+        doReturn(1).when(userMapper).deleteById(1);
+        userService.delete(1);
+        verify(userMapper).deleteById(1);
+    }
+
+    @Test
+    void 存在しないユーザーのIDを指定したときに削除が行われず例外を返すこと() {
+        doReturn(Optional.empty()).when(userMapper).findById(0);
+        assertThrows(UserNotFoundException.class, () -> userService.delete(0));
+        verify(userMapper, never()).deleteById(0);
+        verify(userMapper).findById(0);
     }
 }
