@@ -15,6 +15,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -60,6 +62,26 @@ class UserServiceTest {
         User newUser = new User(4, "hayashi", "1992/03/09");
         userService.insert(newUser);
         verify(userMapper).insert(newUser);
+    }
+
+    @Test
+    void 存在するユーザーのIDを指定したときに正常にユーザーを更新できること() {
+        User existingUser = new User(1, "suzuki", "1973/07/22");
+        User updateUser = new User(1, "sato", "1988/04/18");
+        doReturn(Optional.of(existingUser)).when(userMapper).findById(1);
+        doNothing().when(userMapper).update(updateUser);
+        User actual = userService.update(1, "sato", "1988/04/18");
+        verify(userMapper).findById(1);
+        verify(userMapper).update(updateUser);
+        assertThat(actual).isEqualTo(updateUser);
+    }
+
+    @Test
+    void 存在しないユーザーのIDを指定したときに更新が行われず例外を返すこと() {
+        doReturn(Optional.empty()).when(userMapper).findById(0);
+        assertThrows(UserNotFoundException.class, () -> userService.update(0, "sato", "1988/04/18"));
+        verify(userMapper, never()).update(any(User.class));
+        verify(userMapper).findById(0);
     }
 
     @Test
