@@ -71,7 +71,7 @@ class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/users.yml")
     @Transactional
-    void 存在しないユーザーのIDを指定したときにエラー内容を含めた例外を返すこと() throws Exception {
+    void 存在しないユーザーのIDを指定したときに404エラーを返すこと() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/0"))
                 .andExpect(status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
