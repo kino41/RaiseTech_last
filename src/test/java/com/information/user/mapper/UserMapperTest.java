@@ -79,7 +79,8 @@ class UserMapperTest {
         assertThat(optionalUser).isPresent();
 
         User user = optionalUser.get();
-        userMapper.deleteById(user.getId());
+        int deletedRowCount = userMapper.deleteById(user.getId());
+        assertThat(deletedRowCount).isEqualTo(1);
 
         Optional<User> deleteOptionalUser = userMapper.findById(user.getId());
         assertThat(deleteOptionalUser).isEmpty();
