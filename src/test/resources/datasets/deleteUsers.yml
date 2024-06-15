@@ -1,0 +1,7 @@
+users:
+  - id: 2
+    name: "kato"
+    birthdate: "1960/03/15"
+  - id: 3
+    name: "tanaka"
+    birthdate: "1991/12/08"
