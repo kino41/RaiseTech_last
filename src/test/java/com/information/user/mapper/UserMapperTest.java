@@ -101,6 +101,12 @@ class UserMapperTest {
 
         Optional<User> updateUser = userMapper.findById(0);
         assertThat(updateUser).isEmpty();
+
+        Optional<User> OptionalUser = userMapper.findById(1);
+        assertThat(OptionalUser).isPresent();
+        User existingUserDetails = OptionalUser.get();
+        assertThat(existingUserDetails.getName()).isNotEqualTo("sato");
+        assertThat(existingUserDetails.getBirthdate()).isNotEqualTo("1988/04/18");
     }
 
     @Test
