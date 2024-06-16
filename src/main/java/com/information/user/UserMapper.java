@@ -20,7 +20,7 @@ public interface UserMapper {
     void insert(User user);
 
     @Update("UPDATE users SET name = #{name}, birthdate = #{birthdate} WHERE id = #{id}")
-    int update(User user);
+    void update(User user);
 
     @Select("SELECT * FROM users WHERE id = #{id}")
     Optional<User> findById(int id);

@@ -97,10 +97,7 @@ class UserMapperTest {
         Optional<User> user = userMapper.findById(0);
         assertThat(user).isEmpty();
 
-        User nonExistingUser = new User(0, "sato", "1988/04/18");
-        int updateCount = userMapper.update(nonExistingUser);
-
-        assertThat(updateCount).isZero();
+        userMapper.update(new User(0, "sato", "1988/04/18"));
 
         Optional<User> updateUser = userMapper.findById(0);
         assertThat(updateUser).isEmpty();
