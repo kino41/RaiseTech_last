@@ -72,6 +72,45 @@ class UserMapperTest {
 
     @Test
     @DataSet(value = "datasets/users.yml")
+    @ExpectedDataSet(value = "datasets/updateUsers.yml")
+    @Transactional
+    void 存在するユーザーのIDを指定したときにユーザーを更新できること() {
+        Optional<User> optionalUser = userMapper.findById(1);
+        assertThat(optionalUser).isPresent();
+        User existingUser = optionalUser.get();
+        assertThat(existingUser.getName()).isNotEqualTo("sato");
+        assertThat(existingUser.getBirthdate()).isNotEqualTo("1988/04/18");
+
+        User user = new User(1, "sato", "1988/04/18");
+        userMapper.update(user);
+
+        Optional<User> updateOptionalUser = userMapper.findById(1);
+        assertThat(updateOptionalUser).isPresent();
+        User updatedUser = updateOptionalUser.get();
+        assertThat(updatedUser.getName()).isEqualTo("sato");
+        assertThat(updatedUser.getBirthdate()).isEqualTo("1988/04/18");
+    }
+
+    @Test
+    @Transactional
+    void 存在しないユーザーのIDを指定したときに更新が行われないこと() {
+        Optional<User> user = userMapper.findById(0);
+        assertThat(user).isEmpty();
+
+        userMapper.update(new User(0, "sato", "1988/04/18"));
+
+        Optional<User> updateUser = userMapper.findById(0);
+        assertThat(updateUser).isEmpty();
+
+        Optional<User> OptionalUser = userMapper.findById(1);
+        assertThat(OptionalUser).isPresent();
+        User existingUserDetails = OptionalUser.get();
+        assertThat(existingUserDetails.getName()).isNotEqualTo("sato");
+        assertThat(existingUserDetails.getBirthdate()).isNotEqualTo("1988/04/18");
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
     @ExpectedDataSet(value = "datasets/deleteUsers.yml")
     @Transactional
     void 存在するユーザーのIDを指定したときにユーザーを削除できること() {
