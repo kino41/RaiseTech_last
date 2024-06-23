@@ -109,6 +109,16 @@ class UserRestApiIntegrationTest {
 
     @Test
     @DataSet(value = "datasets/users.yml")
+    @Transactional
+    void 空のリクエストボディを送信した場合に400エラーを返すこと() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
     @ExpectedDataSet(value = "datasets/deleteUsers.yml")
     @Transactional
     void ユーザーIDを指定して削除するAPIが正常に動作すること() throws Exception {
