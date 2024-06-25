@@ -110,11 +110,68 @@ class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/users.yml")
     @Transactional
-    void 空のリクエストボディを送信した場合に400エラーを返すこと() throws Exception {
+    void 空のリクエストボディを送信して新しいユーザーを登録しようとした場合に400エラーを返すこと() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @ExpectedDataSet(value = "datasets/updateUsers.yml")
+    @Transactional
+    void ユーザーIDを指定して更新するAPIが正常に動作すること() throws Exception {
+        String updateUser = """
+                    {
+                      "name": "sato",
+                      "birthdate": "1988/04/18"
+                    }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateUser))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                           {
+                             "message": "user updated"
+                           }
+                        """
+                ));
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @Transactional
+    void 存在しないユーザーIDを指定して更新したときに404エラーを返すこと() throws Exception {
+        String updateUser = """
+                      {
+                        "name": "sato",
+                        "birthdate": "1988/04/18"
+                      }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/users/0")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateUser))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(HttpStatus.NOT_FOUND.getReasonPhrase()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("user not found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.path").value("/users/0"));
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @Transactional
+    void 空のリクエストボディを送信してユーザーを更新しようとした場合に400エラーを返すこと() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     @Test
